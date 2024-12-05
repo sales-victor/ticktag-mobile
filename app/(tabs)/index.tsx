@@ -13,6 +13,13 @@ export default function HomeScreen() {
             <TouchableOpacity style={styles.button} onPress={() => router.push('/event-details')}>
                 <Text style={styles.buttonText}>View Event</Text>
             </TouchableOpacity>
+            {/* Botões de navegação para Política e Contato */}
+            <TouchableOpacity style={styles.button} onPress={() => router.push('/politica')}>
+                <Text style={styles.buttonText}>Política</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => router.push('/contato')}>
+                <Text style={styles.buttonText}>Contato</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -35,5 +42,6 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#fff',
         fontWeight: 'bold',
+        textTransform: 'uppercase', // Garantindo que o texto seja maiúsculo
     },
 });
