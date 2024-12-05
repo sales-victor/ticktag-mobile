@@ -13,6 +13,9 @@ export default function HomeScreen() {
             <TouchableOpacity style={styles.button} onPress={() => router.push('/event-details')}>
                 <Text style={styles.buttonText}>View Event</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => router.push('/cart-details')}>
+                <Text style={styles.buttonText}>View Cart</Text>
+            </TouchableOpacity>
         </View>
     );
 }
