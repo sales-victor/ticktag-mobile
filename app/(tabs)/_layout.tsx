@@ -7,6 +7,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import {FontAwesome} from "@expo/vector-icons";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -30,16 +31,30 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
           title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={20} name="paperplane.fill" color={color} />,
         }}
       />
+        <Tabs.Screen
+            name="catalogo"
+            options={{
+                title: 'Catalogo',
+                tabBarIcon: ({ color }) => <FontAwesome color={color} size={20} name="search" />,
+            }}
+        />
+        <Tabs.Screen
+            name="favoritos"
+            options={{
+                title: 'Favoritos',
+                tabBarIcon: ({ color }) => <FontAwesome color={color} size={20} name="heart" />,
+            }}
+        />
     </Tabs>
   );
 }
