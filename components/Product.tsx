@@ -4,8 +4,8 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 interface ProductFuncI {
   itemCart: ItemCarrinhoI;
-  updateQuantity: (item: ItemCarrinhoI, action: string) => void;
-  removeFromCart: (item: ItemCarrinhoI) => void;
+  updateQuantity?: (item: ItemCarrinhoI, action: string) => void;
+  removeFromCart?: (item: ItemCarrinhoI) => void;
 }
 
 export default function Product({ itemCart, updateQuantity, removeFromCart }: ProductFuncI) {
@@ -44,21 +44,29 @@ export default function Product({ itemCart, updateQuantity, removeFromCart }: Pr
       </View>
       <View style={styles.priceQuantity}>
         <Text style={styles.priceText}>R$ {(itemCart?.tipoTicket.valorTicket * itemCart?.quantidade).toFixed(2)}</Text>
-        <View style={styles.quantityView}>
-          <Pressable style={styles.quantityButtons} onPress={() => updateQuantity(itemCart, "increase")}>
-            <Text style={styles.quantityButtonText}>+</Text>
-          </Pressable>
+        {updateQuantity != null ? (
+          <View style={styles.quantityView}>
+            <Pressable style={styles.quantityButtons} onPress={() => updateQuantity(itemCart, "increase")}>
+              <Text style={styles.quantityButtonText}>+</Text>
+            </Pressable>
+            <Text style={styles.quantityText}>{itemCart?.quantidade}</Text>
+            <Pressable style={styles.quantityButtons} onPress={() => updateQuantity(itemCart, "decrease")}>
+              <Text style={styles.quantityButtonText}>-</Text>
+            </Pressable>
+          </View>
+        ) : (
           <Text style={styles.quantityText}>{itemCart?.quantidade}</Text>
-          <Pressable style={styles.quantityButtons} onPress={() => updateQuantity(itemCart, "decrease")}>
-            <Text style={styles.quantityButtonText}>-</Text>
+        )}
+      </View>
+      {removeFromCart != null ? (
+        <View style={styles.removeContainer}>
+          <Pressable style={styles.removeButton} onPress={() => removeFromCart(itemCart)}>
+            <Text style={styles.removeButtonText}>X</Text>
           </Pressable>
         </View>
-      </View>
-      <View style={styles.removeContainer}>
-        <Pressable style={styles.removeButton} onPress={() => removeFromCart(itemCart)}>
-          <Text style={styles.removeButtonText}>X</Text>
-        </Pressable>
-      </View>
+      ) : (
+        ""
+      )}
     </View>
   );
 }
@@ -121,7 +129,7 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 16.5,
-    marginTop: 5
+    marginTop: 5,
   },
   removeContainer: {
     justifyContent: "center",
