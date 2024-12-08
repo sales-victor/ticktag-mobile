@@ -91,6 +91,9 @@ function Home() {
                                         <TouchableOpacity style={styles.button} onPress={() => router.push('/contato')}>
                                             <Text style={styles.buttonText}>Contato</Text>
                                         </TouchableOpacity>
+                                        <TouchableOpacity style={styles.button} onPress={() => router.push('/cart-details')}>
+                                            <Text style={styles.buttonText}>Carrinho</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 )}
                             </View>
