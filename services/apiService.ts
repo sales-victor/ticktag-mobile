@@ -2,7 +2,7 @@ const API_URL: string = "http://192.168.1.12:8080";
 
 // TODO: Change to getToken function when authentication is implemented
 const token: string =
-  "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGlhZ283MzEzdmluaUBnbWFpbC5jb20iLCJpYXQiOjE3MzM2NzIwNDIsImV4cCI6MTczMzcwODA0Mn0.aoEC_LZZiA5rGp88LtG7Lp72GqSxbpIL5sNhvHFoIqo";
+  "";
 
 export async function createData(endpoint: string, data: Object) {
   // const token = getToken();
