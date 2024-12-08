@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, FlatList, Text, Image, TextInput, Button, Modal} from 'react-native';
+import {View, StyleSheet, FlatList, SafeAreaView, Text} from 'react-native';
 import {useNavigation, useRouter} from 'expo-router';
 import {ThemedText} from "@/components/ThemedText";
-import {FontAwesome} from "@expo/vector-icons";
 import EventCard from "@/components/EventCard";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function FavoriteScreen() {
     const navigation = useNavigation();
@@ -16,26 +16,25 @@ export default function FavoriteScreen() {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            console.log('Focus event');
             loadFavorites();
         });
         return unsubscribe;
     }, [navigation]);
 
 
-    const loadFavorites = () => {
-        const storedFavorites = window.localStorage.getItem('favoritos');
+    const loadFavorites = async () => {
+        const storedFavorites = await AsyncStorage.getItem('favoritos');
         if (storedFavorites) {
             setFavorites(JSON.parse(storedFavorites));
         }
     };
-    const removeFromFavorites = (item: any) => {
-        const storedFavorites = window.localStorage.getItem('favoritos');
+    const removeFromFavorites = async (item: any) => {
+        const storedFavorites = await AsyncStorage.getItem('favoritos');
         if(!storedFavorites) {
-            window.localStorage.setItem('favoritos', JSON.stringify([]));
+            await AsyncStorage.setItem('favoritos', JSON.stringify([]));
         }
         setFavorites(favorites.filter(favorite => favorite.id !== item.id));
-        window.localStorage.setItem('favoritos', JSON.stringify(favorites.filter(favorite => favorite.id !== item.id)));
+        await AsyncStorage.setItem('favoritos', JSON.stringify(favorites.filter(favorite => favorite.id !== item.id)));
     };
 
     const renderEventCard = ({ item }) => {
@@ -50,18 +49,26 @@ export default function FavoriteScreen() {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <ThemedText style={styles.title}>Favoritos</ThemedText>
-                <ThemedText style={styles.title}></ThemedText>
-            </View>
-            <ThemedText style={styles.resultsText}></ThemedText>
-            <FlatList
-                data={favorites}
-                renderItem={renderEventCard}
-                keyExtractor={(item) => item.id}
-                style={styles.eventList}
-            />
+        <View style={{ flex: 1 }}>
+            {/* Colored top section */}
+            <View style={{ height: 50, backgroundColor: '#007be1' }} />
+            <SafeAreaView style={styles.container}>
+                <View style={styles.header}>
+                    <ThemedText style={styles.title}>Favoritos</ThemedText>
+                </View>
+                {favorites?.length > 0 ?
+                    (
+                        <FlatList
+                            data={favorites}
+                            renderItem={renderEventCard}
+                            keyExtractor={(item) => item.id}
+                            style={styles.eventList}
+                        />
+                    )
+                    : (
+                        <Text style={styles.noEvents}>Não há eventos nos favoritos</Text>
+                    )}
+            </SafeAreaView>
         </View>
     );
 }
@@ -78,6 +85,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         padding: 16,
         backgroundColor: '#007be1',
+        marginBottom: 16,
     },
     title: {
         fontSize: 24,
@@ -87,6 +95,13 @@ const styles = StyleSheet.create({
     filterIcon: {
         color: '#ffffff',
     },
+    noEvents: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#5a5a5a',
+        padding: 16,
+        alignSelf: 'center',
+    },
     resultsText: {
         padding: 16,
         fontSize: 16,
@@ -94,6 +109,7 @@ const styles = StyleSheet.create({
     },
     eventList: {
         flex: 1,
+        marginBottom: 45,
     },
     button: {
         backgroundColor: '#007be1',

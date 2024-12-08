@@ -1,10 +1,8 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {FontAwesome} from "@expo/vector-icons";
 import React from "react";
-import {useRouter} from "expo-router";
 
 export default function EventCard({item, favorites, onEventClick, onFavoriteClick}: {item: any, favorites: any[], onEventClick: any, onFavoriteClick: any}) {
-    const router = useRouter();
 
     const isFavorite = favorites.find((favorite:any) => favorite.id === item.id);
     const formatedDate = new Date(item.dataEvento).toLocaleDateString('pt-BR');
@@ -14,7 +12,9 @@ export default function EventCard({item, favorites, onEventClick, onFavoriteClic
             <Image source={{ uri: `data:image/png;base64, ${item.capaEvento}`  }} style={styles.image} />
             <View style={styles.cardContent}>
                 <Text style={styles.cardTitle}>{item.nomeEvento}</Text>
-                <Text style={styles.description}>{item.statusEvento}</Text>
+                <Text style={styles.description}>Status: {item.statusEvento}</Text>
+                <Text style={styles.description}>Lotação Máxima: {item.lotacaoMaxima}</Text>
+                <Text style={styles.description}>Classificação Etária: {item.classificacaoIdade}</Text>
                 <Text style={styles.date}>{formatedDate}</Text>
 
                 <View style={styles.buttonContainer}>
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: '#5a5a5a',
+        marginBottom: 16,
     },
     card: {
         marginHorizontal: 16,
@@ -69,6 +70,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '600',
         color: '#5a5a5a',
+        marginTop: 16,
         marginBottom: 16,
     },
     image: {
