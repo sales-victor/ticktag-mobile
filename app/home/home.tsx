@@ -16,49 +16,7 @@ interface Evento {
     classificacaoIdade: number;
 }
 
-// Dados mockados para teste
-// const mockEventos: Evento[] = [
-//     {
-//         id: 1,
-//         nomeEvento: "Evento de Teste 1",
-//         dataEvento: "2024-12-03T00:00:00Z",
-//         capaEvento: "data:image/jpeg;base64,...",
-//         endereco: {
-//             nomeEspaco: "Espaço Teste 1",
-//         },
-//         classificacaoIdade: 0,
-//     },
-//     {
-//         id: 2,
-//         nomeEvento: "Evento de Teste 2",
-//         dataEvento: "2024-12-04T00:00:00Z",
-//         capaEvento: "data:image/png;base64,...", // Outra imagem base64 mockada
-//         endereco: {
-//             nomeEspaco: "Espaço Teste 2",
-//         },
-//         classificacaoIdade: 0,
-//     },
-//     {
-//         id: 3,
-//         nomeEvento: "Evento de Teste 3",
-//         dataEvento: "2024-12-03T00:00:00Z",
-//         capaEvento: "data:image/png;base64,...", // Imagem base64 mockada
-//         endereco: {
-//             nomeEspaco: "Espaço Teste 3",
-//         },
-//         classificacaoIdade: 0,
-//     },
-//     {
-//         id: 4,
-//         nomeEvento: "Evento de Teste 4",
-//         dataEvento: "2024-12-05T00:00:00Z",
-//         capaEvento: "data:image/png;base64,...", // Outra imagem base64 mockada
-//         endereco: {
-//             nomeEspaco: "Espaço Teste 4",
-//         },
-//         classificacaoIdade: 0,
-//     },
-// ];
+
 
 function Home() {
     const [eventos, setEventos] = useState<Evento[]>([]);
