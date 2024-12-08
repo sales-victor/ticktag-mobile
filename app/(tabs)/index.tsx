@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import Home from '../home/home';
+import LoginScreen from "@/app/login";
 
 export default function HomeScreen() {
     const router = useRouter();
@@ -23,7 +24,7 @@ export default function HomeScreen() {
         //     </TouchableOpacity>
         // </View>
 
-        <Home></Home>
+        <LoginScreen></LoginScreen>
     );
 }
 

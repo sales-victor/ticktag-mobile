@@ -28,11 +28,13 @@ export default function RootLayout() {
 
   return (
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="event-details" options={{ title: 'Event Details' }} />
-        </Stack>
-        <StatusBar style="auto" />
+          <Stack initialRouteName="login">
+              <Stack.Screen name="login" options={{ title: 'Login', headerShown: false }} />
+              <Stack.Screen name="register" options={{ title: 'Register' }} />
+              <Stack.Screen name="home" options={{ title: 'Home' }} />
+              <Stack.Screen name="event-details" options={{ title: 'Event Details' }} />
+          </Stack>
+          <StatusBar style="auto" />
       </ThemeProvider>
   );
 }
