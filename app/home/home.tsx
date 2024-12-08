@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Image, Button, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import Base64Image from '../base64-image'; // Se precisar de um componente para exibir imagens base64
 import { useRouter } from "expo-router";
+import { useSearchParams } from "expo-router/build/hooks";
 
 // Definindo o tipo para o Evento
 interface Evento {
@@ -16,55 +17,64 @@ interface Evento {
 }
 
 // Dados mockados para teste
-const mockEventos: Evento[] = [
-    {
-        id: 1,
-        nomeEvento: "Evento de Teste 1",
-        dataEvento: "2024-12-03T00:00:00Z",
-        capaEvento: "data:image/jpeg;base64,...",
-        endereco: {
-            nomeEspaco: "Espaço Teste 1",
-        },
-        classificacaoIdade: 0,
-    },
-    {
-        id: 2,
-        nomeEvento: "Evento de Teste 2",
-        dataEvento: "2024-12-04T00:00:00Z",
-        capaEvento: "data:image/png;base64,...", // Outra imagem base64 mockada
-        endereco: {
-            nomeEspaco: "Espaço Teste 2",
-        },
-        classificacaoIdade: 0,
-    },
-    {
-        id: 3,
-        nomeEvento: "Evento de Teste 3",
-        dataEvento: "2024-12-03T00:00:00Z",
-        capaEvento: "data:image/png;base64,...", // Imagem base64 mockada
-        endereco: {
-            nomeEspaco: "Espaço Teste 3",
-        },
-        classificacaoIdade: 0,
-    },
-    {
-        id: 4,
-        nomeEvento: "Evento de Teste 4",
-        dataEvento: "2024-12-05T00:00:00Z",
-        capaEvento: "data:image/png;base64,...", // Outra imagem base64 mockada
-        endereco: {
-            nomeEspaco: "Espaço Teste 4",
-        },
-        classificacaoIdade: 0,
-    },
-];
+// const mockEventos: Evento[] = [
+//     {
+//         id: 1,
+//         nomeEvento: "Evento de Teste 1",
+//         dataEvento: "2024-12-03T00:00:00Z",
+//         capaEvento: "data:image/jpeg;base64,...",
+//         endereco: {
+//             nomeEspaco: "Espaço Teste 1",
+//         },
+//         classificacaoIdade: 0,
+//     },
+//     {
+//         id: 2,
+//         nomeEvento: "Evento de Teste 2",
+//         dataEvento: "2024-12-04T00:00:00Z",
+//         capaEvento: "data:image/png;base64,...", // Outra imagem base64 mockada
+//         endereco: {
+//             nomeEspaco: "Espaço Teste 2",
+//         },
+//         classificacaoIdade: 0,
+//     },
+//     {
+//         id: 3,
+//         nomeEvento: "Evento de Teste 3",
+//         dataEvento: "2024-12-03T00:00:00Z",
+//         capaEvento: "data:image/png;base64,...", // Imagem base64 mockada
+//         endereco: {
+//             nomeEspaco: "Espaço Teste 3",
+//         },
+//         classificacaoIdade: 0,
+//     },
+//     {
+//         id: 4,
+//         nomeEvento: "Evento de Teste 4",
+//         dataEvento: "2024-12-05T00:00:00Z",
+//         capaEvento: "data:image/png;base64,...", // Outra imagem base64 mockada
+//         endereco: {
+//             nomeEspaco: "Espaço Teste 4",
+//         },
+//         classificacaoIdade: 0,
+//     },
+// ];
 
 function Home() {
     const [eventos, setEventos] = useState<Evento[]>([]);
 
     useEffect(() => {
-        // Simula a resposta da API com dados mockados
-        setEventos(mockEventos);
+        const fetchEventDetails = async () => {
+            try {
+                const response = await fetch(`http://localhost:8080/evento`);
+                const data = await response.json();
+                setEventos(data.data);
+            } catch (error) {
+                console.error('Error fetching event details:', error);
+            }
+        };
+
+        fetchEventDetails();
     }, []);
 
     useEffect(() => {
@@ -95,40 +105,7 @@ function Home() {
         <ScrollView style={styles.container}>
             <View style={styles.line}></View>
             {/* Evento Destaque */}
-            {/* <View style={styles.highlightSection}>
-                <View style={styles.highlightContent}>
-                    <Text style={styles.title}>Destaque</Text>
-                    {indiceAleatorio >= 0 ? (
-                        <>
-                            <Text style={styles.eventName}>
-                                {eventoDoDia[indiceAleatorio]?.nomeEvento || "Nenhum evento disponível"}
-                            </Text>
-                            <Text style={styles.date}>
-                                Dia: {new Date(eventoDoDia[indiceAleatorio]?.dataEvento).toLocaleDateString("pt-BR")}
-                            </Text>
-                            <Text style={styles.location}>
-                                Local: {eventoDoDia[indiceAleatorio]?.endereco?.nomeEspaco || "Local não disponível"}
-                            </Text>
-                            <Button
-                                title="Saiba mais"
-                                onPress={() => console.log(`Navegar para evento ${eventoDoDia[indiceAleatorio]?.id}`)} // Navegação a ser implementada
-                            />
-                        </>
-                    ) : (
-                        <Text style={styles.noEventText}>Nenhum evento do dia disponível.</Text>
-                    )}
-                </View>
-                <View style={styles.imageContainer}> */}
-            {/* <Base64Image base64String={eventoDoDia[indiceAleatorio]?.capaEvento} /> */}
-            {/* <Image
-                        style={styles.eventImage}
-                        source={require('./images.jpg')}
-                    />
-                </View>
-            </View> */}
             <View style={styles.container}>
-
-
                 {/* Destaque */}
                 <View style={styles.highlightSection}>
                     <View style={styles.highlightContent}>
@@ -183,7 +160,8 @@ function Home() {
                         <View style={styles.imageContainer}>
                             <Image
                                 style={styles.eventImage}
-                                source={require('./images.jpg')}
+                                source={{ uri: `data:image/jpg;base64,${eventoDoDia[indiceAleatorio]?.capaEvento}` }}
+                                // source={require('./images.jpg')}
                             />
                         </View>
                     </View>
@@ -199,7 +177,7 @@ function Home() {
                             <View style={styles.eventCard} key={evento.id}>
                                 <Image
                                     style={styles.eventImage}
-                                    source={require('./images.jpg')}
+                                    source={{ uri: `data:image/jpg;base64,${eventoDoDia[indiceAleatorio]?.capaEvento}` }}
                                 />
                                 <Text style={styles.eventName}>{evento.nomeEvento}</Text>
                                 <Text style={styles.date}>
@@ -227,7 +205,7 @@ function Home() {
                             <View style={styles.eventCard} key={evento.id}>
                                 <Image
                                     style={styles.eventImage}
-                                    source={require('./images.jpg')}
+                                    source={{ uri: `data:image/jpg;base64,${eventoDoDia[indiceAleatorio]?.capaEvento}` }}
                                 />
                                 <Text style={styles.eventName}>{evento.nomeEvento}</Text>
                                 <Text style={styles.date}>
@@ -255,7 +233,7 @@ function Home() {
                             <View style={styles.eventCard} key={evento.id}>
                                 <Image
                                     style={styles.eventImage}
-                                    source={require('./images.jpg')}
+                                    source={{ uri: `data:image/jpg;base64,${eventoDoDia[indiceAleatorio]?.capaEvento}` }}
                                 />
                                 <Text style={styles.eventName}>{evento.nomeEvento}</Text>
                                 <Text style={styles.date}>
